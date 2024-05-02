@@ -37,7 +37,7 @@ namespace GestoreEventi
 
             foreach(Evento e in lista)
             {
-                text += $"\n{e.Data} - {e.Titolo} - Capienza massima: {e.Capienza} - Posti disponibili: {e.PostiDisponibili()}";
+                text += $"\n\t{e.Data} - {e.Titolo} - Capienza massima: {e.Capienza} - Posti disponibili: {e.PostiDisponibili()}";
             }
 
             return text;

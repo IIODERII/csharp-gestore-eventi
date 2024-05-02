@@ -1,5 +1,16 @@
 ﻿namespace GestoreEventi
 {
+    public class DataPassataException : Exception
+    {
+        public override string Message => "Attenzione! Non puoi creare un evento in data passata.";
+    }
+    public class TitoloVuotoException : Exception {
+        public override string Message => "Attenzione! Il titolo non può essere vuoto.";
+    }
+    public class PostiNegativiException : Exception
+    {
+        public override string Message => "Attenzione! Il numero di posti non può essere negativo.";
+    }
     internal class Program
     {
         static void Main(string[] args)
@@ -50,6 +61,59 @@
                     Console.WriteLine("Attenzione! Input non valido");
                 }
             }
+
+            Console.Write("\nInserisci il nome del tuo programma eventi: ");
+            string nomeProgramma = Console.ReadLine();
+            Console.Write("Indica il numero di eventi da inserire: ");
+            int numeroEventi = int.Parse(Console.ReadLine());
+
+            ProgrammaEventi programma = new ProgrammaEventi(nomeProgramma);
+
+            for(int i = 0; i< numeroEventi; i++)
+            {
+                try
+                {
+                    Console.Write($"\nInserisci il nome del {i + 1}° evento: ");
+                    string nomeEventoLista = Console.ReadLine();
+                    Console.Write($"Inserisci la data del {i + 1}° evento (gg/mm/aaaa): ");
+                    DateTime dataEventoLista = DateTime.Parse(Console.ReadLine());
+                    Console.Write($"Inserisci il numero di posti totali del {i + 1}° evento: ");
+                    int postiEventoLista = int.Parse(Console.ReadLine());
+
+                    if (dataEventoLista.Date < DateTime.Now)
+                        throw new DataPassataException();
+                    if (nomeEventoLista == "")
+                        throw new TitoloVuotoException();
+                    if (postiEventoLista < 0)
+                        throw new PostiNegativiException();
+
+                    programma.AggiungiEvento(new Evento(nomeEventoLista, dataEventoLista, postiEventoLista));
+                }
+                catch (DataPassataException e)
+                {
+                    Console.WriteLine(e.Message);
+                    i--;
+                }
+                catch (TitoloVuotoException e)
+                {
+                    Console.WriteLine(e.Message);
+                    i--;
+                }
+                catch (PostiNegativiException e)
+                {
+                    Console.WriteLine(e.Message);
+                    i--;
+                }
+            }
+
+            Console.WriteLine($"\nIl numero degli eventi nel programma è: {programma.NumeroEventi()}");
+            Console.WriteLine($"Ecco il tuo programma eventi:\n{programma.ListaInStringa()}");
+
+            Console.Write("\nInserisci una data per sapere che eventi ci saranno quel giorno (gg/mm/aaaa): ");
+            List<Evento> eventiInData = programma.EventiInData(DateTime.Parse(Console.ReadLine()));
+
+            Console.WriteLine($"\nEcco gli eventi questa data:");
+            Console.WriteLine(ProgrammaEventi.ListaInStringa(eventiInData));
         }
     }
 }
