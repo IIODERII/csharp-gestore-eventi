@@ -114,6 +114,54 @@
 
             Console.WriteLine($"\nEcco gli eventi questa data:");
             Console.WriteLine(ProgrammaEventi.ListaInStringa(eventiInData));
+
+            //programma.SvuotaEventi();
+
+            //BONUS
+
+            Console.WriteLine("\n---- BONUS ----");
+            Console.WriteLine("\nAggiungiamo anche una conferenza!");
+            var going = true;
+            while(going)
+            {
+                Console.Write("\nInserisci il nome della conferenza: ");
+                string titoloConf = Console.ReadLine();
+                Console.Write("Inserisci la data della conferenza (gg/mm/aaaa): ");
+                DateTime dataConf = DateTime.Parse(Console.ReadLine());
+                Console.Write("Inserisci il numero dei posti per la conferenza: ");
+                int postiConf = int.Parse(Console.ReadLine());
+                Console.Write("Inserisci il relatore della conferenza: ");
+                string relatoreConf = Console.ReadLine();
+                Console.Write("Inserisci il prezzo del biglietto della conferenza: ");
+                double prezzoConf = double.Parse(Console.ReadLine());
+
+                try
+                {
+                     if (dataConf.Date < DateTime.Now)
+                            throw new DataPassataException();
+                     if (titoloConf == "")
+                            throw new TitoloVuotoException();
+                     if (postiConf < 0)
+                            throw new PostiNegativiException();
+
+                     going = false;
+                     programma.AggiungiEvento(new Conferenza(titoloConf, dataConf, postiConf, relatoreConf, prezzoConf));
+                    }
+                    catch (DataPassataException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    catch (TitoloVuotoException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    catch (PostiNegativiException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+            }
+
+            Console.WriteLine($"\nEcco il tuo programma eventi con anche la conferenza:\n{programma.ListaInStringa()}");
         }
     }
 }

@@ -52,7 +52,7 @@ namespace GestoreEventi
             {
                 return capienza;
             }
-            private set
+            protected set
             {
                 if(value < 0)
                 {
@@ -64,7 +64,7 @@ namespace GestoreEventi
                 }
             }
         }
-        public int PostiPrenotati { get; private set; }
+        public int PostiPrenotati { get; protected set; }
 
         public Evento(string titolo, DateTime data, int capienza)
         {
