@@ -8,7 +8,7 @@ namespace GestoreEventi
 {
     public class Evento
     {
-        public string titolo;
+        private string titolo;
         public string Titolo
         {
             get
@@ -27,7 +27,7 @@ namespace GestoreEventi
                 }
             }
         }
-        public DateTime data;
+        private DateTime data;
         public DateTime Data {
             get
             {
@@ -45,7 +45,7 @@ namespace GestoreEventi
                 }
             }
         }
-        public int capienza;
+        private int capienza;
         public int Capienza
         {
             get
@@ -78,7 +78,7 @@ namespace GestoreEventi
             if(posti < 0)
                 throw new Exception("Attenzione! Non puoi prenotare un numero negativo di posti.");
 
-            else if(Data >  DateTime.Now)
+            else if(Data <  DateTime.Now)
                 throw new Exception("Attenzione! L'evento è già passato.");
 
             else if(PostiPrenotati + posti > Capienza)
@@ -90,7 +90,7 @@ namespace GestoreEventi
 
         public void DisdiciPosti(int posti)
         {
-            if(Data > DateTime.Now)
+            if(Data < DateTime.Now)
                 throw new Exception("Attenzione! L'evento è già passato.");
 
             else if(PostiPrenotati - posti < 0)
@@ -102,5 +102,6 @@ namespace GestoreEventi
 
         public override string ToString() => $"{Data.ToString("dd/MM/yyyy")} - {Titolo}";
         
+        public int PostiDisponibili() => Capienza - PostiPrenotati;
     }
 }
